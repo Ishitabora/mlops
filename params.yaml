@@ -1,0 +1,22 @@
+data:
+  train: data/raw/train.csv
+  later: data/raw/later.csv
+  holdout: data/raw/holdout_features.csv
+  target: loaves_sold
+  group_col: outlet
+  date_col: date
+  numeric_features:
+    - price_rs
+    - temp_c
+    - footfall_index
+    - competitor_shops
+    - shelf_hours
+    - orders_previous_day
+  categorical_features:
+    - day_type
+    - outlet
+checks:
+  typo_gap_ratio: 3.0      # a target this many times above the next-lower cluster is a typo
+  stuck_min_run_rows: 20   # a repeated value must cover at least this many rows in a row
+  unit_ratio_threshold: 5  # a group whose mean is this many times off the others is a unit mix-up
+  clean_data_path: data/processed/clean_train.csv
