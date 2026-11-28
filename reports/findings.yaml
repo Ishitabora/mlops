@@ -1,0 +1,63 @@
+# MP213 findings --- fill in every value, keep every key.
+# The marking tool reads this file. Write null only where the comment says so.
+# Use the exact column names and group values from your data files.
+
+group_id: "G154"          # your group id, e.g. "G042"
+problem_id: "MP213"
+
+data_issues:
+  # For each of the 7 kinds: present: true or false.
+  # If present is false, leave the other values as null.
+  leaking_column:
+    present: true
+    column: loaves_in_closing_register           # the column that must not be used as a feature
+  unit_mixup:
+    present: true
+    column: price_rs       # the column recorded in a different unit
+    group_value: College Gate  # the value of outlet whose rows are affected
+    factor: 100           # wrong value = right value x factor
+  sentinel_value:
+    present: false
+    column: null
+    value: null            # the special number typed instead of a blank
+    count: null            # how many rows have it
+  duplicate_rows:
+    present: false
+    count: null            # number of EXTRA copies (rows you would delete)
+  stuck_sensor:
+    present: true
+    column: orders_previous_day
+    start_date: "2026-05-08"  # first date with the stuck value, YYYY-MM-DD
+    end_date: "2026-05-31"         # last date with the stuck value, YYYY-MM-DD
+  target_typos:
+    present: true
+    count: 14            # rows whose target was typed 10 times too big
+  spelling_variants:
+    present: false
+    column: null
+    true_levels: null      # how many real categories there are after cleaning
+
+tracking:
+  experiment_name: bakery_bread_sales
+  best_run_id: 7bc55332fbe5406eaffcb1289d73bc4d        # the MLflow run id of your v1 model
+  registered_model_name: bakery_bread_model
+  champion_version: 2
+
+monitoring:
+  psi:                     # cleaned train.csv vs later.csv, 10 bins
+    price_rs: 0.0141
+    temp_c: 0.0399
+    footfall_index: 0.0515
+    competitor_shops: 0.0339
+    shelf_hours: 5.762
+    orders_previous_day: 0.2187
+  most_drifted_feature: shelf_hours
+  mae_by_group:            # v1 on later.csv, per value of outlet
+    'Station Road': 35.6372
+    'Mall Road': 35.376
+    'College Gate': 202.753
+  worst_served_group: College Gate
+  mae_v1_on_check: 100.6996    # v1 on the last 30% of later.csv (by date)
+  mae_v2_on_check: 44.6372    # v2 on the same rows
+  decision: promote           # promote or keep
+

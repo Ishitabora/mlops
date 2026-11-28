@@ -5,3 +5,4 @@ data/processed/
 mlartifacts/
 mlruns/
 .venv/
+.DS_Store

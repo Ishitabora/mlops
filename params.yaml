@@ -20,3 +20,26 @@ checks:
   stuck_min_run_rows: 20   # a repeated value must cover at least this many rows in a row
   unit_ratio_threshold: 5  # a group whose mean is this many times off the others is a unit mix-up
   clean_data_path: data/processed/clean_train.csv
+model:
+  experiment_name: bakery_bread_sales
+  registered_model_name: bakery_bread_model
+  tracking_uri: sqlite:///mlflow.db
+  model_path: models/model.joblib
+  predictions_path: predictions/holdout_predictions.csv
+  val_split_size: 0.2
+  random_state: 42
+  candidate_models:
+    - name: ridge
+      alpha: 1.0
+    - name: random_forest
+      n_estimators: 100
+      max_depth: 8
+    - name: gradient_boosting
+      n_estimators: 100
+      learning_rate: 0.05
+      max_depth: 4
+  monitoring:
+    psi_bins: 10
+    later_train_split: 0.70
+    promotion_threshold: 0.12
+
